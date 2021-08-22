@@ -66,7 +66,13 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
      */
     onChangeInputFile(event: any): any {
         const file: any = event.target.files[0];
-        this.setState({file: file, isUploaded: true});
+        const reader = new FileReader();
+        reader.addEventListener('load', (event) => {
+            // @ts-ignore
+            let lines = [reader.result.split('\n')];
+            this.setState({isUploaded: true, linesBlock: lines, file: file});
+        });
+        reader.readAsText(file);
     }
 
     handleSubmit(event: any): any {
@@ -80,6 +86,7 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
 
         // Process the file in order to get the blocks
         this.presenter.processReceipt(file);
+        this.setState({linesBlock: []});
 
         event.preventDefault();
     }
@@ -121,12 +128,14 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
 
     render() {
         const {classes}: any = this.props;
+        let key = 0;
         return (
             <Container component="main" maxWidth="xs">
                 <div className={classes.paper}>
                     {
                         this.state.linesBlock.map(lines => {
-                            return <div className={classes.box}>
+                            key += 1;
+                            return <div className={classes.box} key={key}>
                                         <Grow in={true} timeout={1500}>
                                             <div><Block lines={lines} /></div>
                                         </Grow>
