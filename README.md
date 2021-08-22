@@ -1,8 +1,6 @@
 # Leaf
 Leaf Full Stack position
 
-This is what I've tried so far, process text frontend pending (backend implemented including )
-
 ## Stack Used
 Python >= 3.7
 NodeJS >= 16.6.2
@@ -12,8 +10,9 @@ Material UI https://material-ui.com
 
 ## Usage
 
-### leaf_backend (db.sqlite3 already contain users)
+## leaf_backend (db.sqlite3 already contain users)
 
+------------------
 user = admin
 password = admin
 
@@ -22,16 +21,39 @@ password = admin
 user = jose
 password = j0s3j0s3
 
+------------------
+
+#### First activate python 3.7 environment
 ```
-python3.7 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-python manage.py runserver
+$ pwd
+/Leaf/leaf_backend
+
+$ python3.7 -m venv env
+$ source env/bin/activate
+$ pip install -r requirements.txt
+```
+#### Run Backend
+```
+$ pwd
+/Leaf/leaf_backend
+
+$ python manage.py runserver
 ```
 
-### leaf_frontend
+#### Run Tests Backend
+```
+$ pwd
+/Leaf/leaf_backend
+
+$ python manage.py test leaf_backend.backend.tests.tests
+```
+
+## leaf_frontend
 
 ```
-npm install
-npm start
+$ pwd
+/Leaf/leaf_frontend
+
+$ npm install
+$ npm start
 ```
