@@ -54,7 +54,6 @@ $ python manage.py test leaf_backend.backend.tests.tests
 $ pwd
 /Leaf/leaf_frontend
 
-$ cd leaf_frontend
 $ npm install
 $ npm start
 ```
