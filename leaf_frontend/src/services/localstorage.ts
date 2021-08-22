@@ -5,17 +5,17 @@ export default class LocalStorage {
         localStorage.setItem('refreshToken', refreshToken);
     }
 
-    static getAccessToken() {
-        let accessToken = localStorage.getItem('acessToken');
+    static getAccessToken(): string {
+        let accessToken = localStorage.getItem('accessToken');
         if (accessToken)
             return accessToken;
-        return;
+        return "";
     }
 
-    static getRefreshToken() {
+    static getRefreshToken(): string {
         let refreshToken = localStorage.getItem('refreshToken');
         if (refreshToken)
             return refreshToken;
-        return;
+        return "";
     }
 }

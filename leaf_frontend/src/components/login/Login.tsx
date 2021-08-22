@@ -42,6 +42,7 @@ const useStyles = (theme: any) => ({
 
 export interface LoginProps {
     updateStateLogin: Function;
+    updateSnackbar: Function;
 }
 
 export interface LoginState {
@@ -50,7 +51,8 @@ export interface LoginState {
 }
 
 export interface Ilogin {
-    onSignIn(): any;
+    onSignIn(): void;
+    onError(): void;
 }
 
 class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
@@ -93,8 +95,12 @@ class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
     /**
      * --- START Called by Presenter ---
      */
-    onSignIn() {
+    onSignIn(): void {
         this.props.updateStateLogin(true);
+    }
+
+    onError(): void {
+        this.props.updateSnackbar("Something happened!", true);
     }
     /**
      * --- END Called by Presenter ---

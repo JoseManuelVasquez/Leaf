@@ -51,6 +51,7 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
+    "content-disposition",
     "authorization",
     "content-type",
     "dnt",
