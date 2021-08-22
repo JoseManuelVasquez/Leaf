@@ -31,7 +31,7 @@ export default class ReceiptPresenter implements IReceiptPresenter {
                     this.processReceipt(file);
                 }
             }).catch(e => {
-                // TO-DO
+                this.view.onError();
             })
         })
     }

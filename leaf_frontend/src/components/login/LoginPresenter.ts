@@ -21,7 +21,7 @@ export default class LoginPresenter {
                 this.view.onSignIn()
             }
         }).catch(e => {
-            console.log(e)
+            this.view.onError();
         })
     }
 }
