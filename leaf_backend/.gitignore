@@ -1,3 +1,4 @@
 /env
 /.idea
 /leaf_backend/__pycache__
+/leaf_backend/backend/__pycache__

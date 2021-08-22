@@ -8,6 +8,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializers import UserSerializer, GroupSerializer, ReceiptSerializer
 from .services.receipt import ReceiptService
 from datetime import datetime
+import json
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -29,9 +30,16 @@ class ReceiptViewSet(APIView):
 
     def post(self, request):
         try:
-            receipt_service = ReceiptService()
-            file = request.FILES['file']
-            lines = [line.decode().replace('\r', '') for line in file][4:-2]  # read lines
+            file = request.data['file']
+            if not file:
+                return Response({'error': 'Missing file'}, status=status.HTTP_400_BAD_REQUEST)
+            if 'text/plain' not in file.content_type:
+                return Response({'error': 'Content type is not allowed'}, status=status.HTTP_400_BAD_REQUEST)
+
+            receipt_service = ReceiptService()  # Receipt service for algorithms
+            file_content = json.loads(file.read().decode("utf-8").replace('\'', '\"'))
+
+            lines = file_content['file'].split('\n')  # read lines
             blocks = receipt_service.get_blocks(lines)
             data = {
                 'name': file.name,
