@@ -31,7 +31,8 @@ export interface ReceiptProps {
 }
 
 export interface ReceiptState {
-    isUploaded: boolean
+    isUploaded: boolean;
+    isProcessed: boolean;
     file: any;
     linesBlock: string[][];
 }
@@ -49,6 +50,7 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
         super(props);
         this.state = {
             isUploaded: false,
+            isProcessed: false,
             file: null,
             linesBlock: []
         };
@@ -92,24 +94,21 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
         const file: any = this.state.file;
         const reader = new FileReader();
         reader.addEventListener('load', (event) => {
-            console.log(reader.result);
-
             // @ts-ignore
             let lines = reader.result.split('\n');
             let blocks: string[][] = [];
             let linesBlock: string[] = [];
             data.forEach((block: any) => {
                 for (let row=block.begin_row; row <= block.end_row; row++) {
-                    for (let i=lines[row].length; i < block.end_col; i++)
-                        lines[row] += ' ';
+                    //for (let i=lines[row].length; i < block.end_col; i++)
+                     //   lines[row] += ' ';
                     linesBlock.push(lines[row]);
                 }
                 // @ts-ignore
                 blocks.push(linesBlock);
                 linesBlock = [];
             });
-            console.log(blocks);
-            this.setState({linesBlock: blocks})
+            this.setState({linesBlock: blocks, isProcessed: true})
         });
         reader.readAsText(file);
         this.props.updateSnackbar("Receipt Successfully processed!", false);
@@ -128,10 +127,9 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
             <Container component="main" maxWidth="xs">
                 <div className={classes.paper}>
                     {
-                        this.state.linesBlock &&
                         this.state.linesBlock.map(lines => {
                             return <div className={classes.box}>
-                                        <Grow in={true} timeout={3000}>
+                                        <Grow in={true} timeout={1500}>
                                             <div><Block lines={lines} /></div>
                                         </Grow>
                                     </div>
@@ -155,7 +153,7 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
                                 onChange={this.onChangeInputFile}
                             />
                         </Button>}
-                        {this.state.isUploaded &&
+                        {this.state.isUploaded && !this.state.isProcessed &&
                         <Button
                             type="submit"
                             fullWidth
