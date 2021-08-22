@@ -100,8 +100,6 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
             let linesBlock: string[] = [];
             data.forEach((block: any) => {
                 for (let row=block.begin_row; row <= block.end_row; row++) {
-                    //for (let i=lines[row].length; i < block.end_col; i++)
-                     //   lines[row] += ' ';
                     linesBlock.push(lines[row]);
                 }
                 // @ts-ignore
