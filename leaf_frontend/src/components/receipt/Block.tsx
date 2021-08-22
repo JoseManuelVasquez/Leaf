@@ -24,7 +24,6 @@ class Block extends React.Component<BlockProps, BlockState> {
     constructor(props: BlockProps) {
         super(props);
         this.state = {
-            lines: []
         };
     }
 
@@ -38,10 +37,10 @@ class Block extends React.Component<BlockProps, BlockState> {
                         this.props.lines.map(line => {
                             key += 1;
                             return <Typography
-                                    className={classes.text}
-                                    key={key}
-                                    variant="body2"
-                                    component="p">{line}</Typography>
+                                className={classes.text}
+                                key={key}
+                                variant="body2"
+                                component="p">{line}</Typography>
                         })
                     }
                 </CardContent>

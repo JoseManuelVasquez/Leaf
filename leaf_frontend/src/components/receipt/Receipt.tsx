@@ -1,6 +1,7 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Grow from '@material-ui/core/Grow';
 import Button from '@material-ui/core/Button';
 import {ALLOWED_FILE_TYPES} from "../../utils/constant";
 import ReceiptPresenter, {IReceiptPresenter} from "./ReceiptPresenter";
@@ -11,7 +12,7 @@ import Block from "./Block";
  */
 const useStyles = (theme: any) => ({
     paper: {
-        marginTop: theme.spacing(10),
+        marginTop: theme.spacing(3),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -20,6 +21,9 @@ const useStyles = (theme: any) => ({
         margin: theme.spacing(3, 0, 2),
         backgroundColor: '#059475',
     },
+    box: {
+        margin: theme.spacing(1),
+    }
 });
 
 export interface ReceiptProps {
@@ -46,7 +50,7 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
         this.state = {
             isUploaded: false,
             file: null,
-            linesBlock: [['']]
+            linesBlock: []
         };
 
         this.presenter = new ReceiptPresenter(this);
@@ -124,8 +128,13 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
             <Container component="main" maxWidth="xs">
                 <div className={classes.paper}>
                     {
+                        this.state.linesBlock &&
                         this.state.linesBlock.map(lines => {
-                            return <div><Block lines={lines} /><br/></div>
+                            return <div className={classes.box}>
+                                        <Grow in={true} timeout={3000}>
+                                            <div><Block lines={lines} /></div>
+                                        </Grow>
+                                    </div>
                         })
                     }
                     <form onSubmit={this.handleSubmit}>
