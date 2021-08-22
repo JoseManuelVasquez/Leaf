@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializers import UserSerializer, GroupSerializer, ReceiptSerializer
-from .utils import get_blocks
+from .services.receipt import ReceiptService
 from datetime import datetime
 
 
@@ -29,9 +29,10 @@ class ReceiptViewSet(APIView):
 
     def post(self, request):
         try:
+            receipt_service = ReceiptService()
             file = request.FILES['file']
             lines = [line.decode().replace('\r', '') for line in file][4:-2]  # read lines
-            blocks = get_blocks(lines)
+            blocks = receipt_service.get_blocks(lines)
             data = {
                 'name': file.name,
                 'date_time': datetime.now(),
