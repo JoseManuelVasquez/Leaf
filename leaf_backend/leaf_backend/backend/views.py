@@ -38,6 +38,7 @@ class ReceiptViewSet(APIView):
 
             receipt_service = ReceiptService()  # Receipt service for algorithms
             file_content = json.loads(file.read().decode("utf-8").replace('\'', '\"'))
+            asd = file.read().decode("utf-8")
 
             lines = file_content['file'].split('\n')  # read lines
             blocks = receipt_service.get_blocks(lines)

@@ -34,17 +34,18 @@ export default class APIService {
 
     static async processReceipt(file: any, token: string): Promise<any> {
         try {
-            const formData = new FormData();
-            formData.append('file',file);
+            const payload = {
+                file: file.result
+            };
             const config = {
                 headers: {
                     'authorization': `Bearer ${token}`,
-                    'content-disposition': `attachment ; filename=${file.filename}`,
-                    'content-type': 'multipart/form-data'
+                    'Content-Type': 'text/plain; charset=UTF-8',
+                    'Content-Disposition': `attachment ; filename=${file.name}`,
                 }
             };
 
-            let res = await axios.post(PROCESS_RECEIPT_ENDPOINT, formData,config);
+            let res = await axios.post(PROCESS_RECEIPT_ENDPOINT, payload, config);
             let data = res.data;
             return data;
         } catch (e) {

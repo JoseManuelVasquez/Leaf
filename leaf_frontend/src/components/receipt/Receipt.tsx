@@ -80,12 +80,17 @@ class Receipt extends React.Component<ReceiptProps, ReceiptState> implements IRe
 
         // Check if the file is allowed.
         if (file.type && !ALLOWED_FILE_TYPES.includes(file.type)) {
-            console.log('File is not a text file.', file.type, file);
+            console.error('File is not a text file.', file.type, file);
             return;
         }
 
-        // Process the file in order to get the blocks
-        this.presenter.processReceipt(file);
+        const reader = new FileReader();
+        reader.addEventListener('load', (event) => {
+            // Process the file in order to get the blocks
+            this.presenter.processReceipt(reader);
+        });
+        reader.readAsText(file);
+
         this.setState({linesBlock: []});
 
         event.preventDefault();
