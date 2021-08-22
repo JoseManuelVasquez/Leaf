@@ -1,7 +1,22 @@
 import axios from "axios";
-import {PROCESS_RECEIPT_ENDPOINT, REFRESH_TOKEN_ENDPOINT, TOKEN_ENDPOINT} from "../utils/constant";
+import {PROCESS_RECEIPT_ENDPOINT, REFRESH_TOKEN_ENDPOINT, SIGNUP_ENDPOINT, TOKEN_ENDPOINT} from "../utils/constant";
 
 export default class APIService {
+
+    static async signUp(username: string, password: string): Promise<any> {
+        try {
+            const payload = {
+                username: username,
+                password: password
+            };
+
+            let res = await axios.post(SIGNUP_ENDPOINT, payload);
+            let data = res.data;
+            return data;
+        } catch (e) {
+            throw e
+        }
+    }
 
     static async requestToken(username: string, password: string): Promise<any> {
         try {

@@ -1,4 +1,5 @@
 // API CONSTANTS
+export const SIGNUP_ENDPOINT = "http://localhost:8000/signup";
 export const TOKEN_ENDPOINT = "http://localhost:8000/token";
 export const REFRESH_TOKEN_ENDPOINT = "http://localhost:8000/token/refresh";
 export const PROCESS_RECEIPT_ENDPOINT = "http://localhost:8000/receipt";

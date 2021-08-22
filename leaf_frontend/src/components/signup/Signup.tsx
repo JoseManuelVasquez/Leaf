@@ -1,17 +1,12 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from '../copyright/Copyright';
-import LoginPresenter, {ILoginPresenter} from "./LoginPresenter";
+import SignupPresenter, {ISignupPresenter} from "./SignupPresenter";
 
 /**
  *  In line style
@@ -40,27 +35,26 @@ const useStyles = (theme: any) => ({
     },
 });
 
-export interface LoginProps {
-    updateStateLogin: Function;
+export interface SignupProps {
     updateStateSignup: Function;
     updateSnackbar: Function;
 }
 
-export interface LoginState {
+export interface SignupState {
     username: string;
     password: string;
 }
 
-export interface Ilogin {
-    onSignIn(): void;
+export interface ISignup {
+    onSignUp(): void;
     onError(): void;
 }
 
-class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
+class Signup extends React.Component<SignupProps, SignupState> implements ISignup{
 
-    presenter: ILoginPresenter;
+    presenter: ISignupPresenter;
 
-    constructor(props: LoginProps) {
+    constructor(props: SignupProps) {
         super(props);
         this.state = {
             username: '',
@@ -71,19 +65,14 @@ class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
         this.handleUsername = this.handleUsername.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
 
-        this.presenter = new LoginPresenter(this);
+        this.presenter = new SignupPresenter(this);
     }
 
     /**
      * --- START View methods ---
      */
     handleSubmit(event: any): any {
-        this.presenter.signIn(this.state.username, this.state.password);
-        event.preventDefault();
-    }
-
-    handleSignup(event: any): any {
-        this.props.updateStateSignup(true);
+        this.presenter.signUp(this.state.username, this.state.password);
         event.preventDefault();
     }
 
@@ -101,8 +90,9 @@ class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
     /**
      * --- START Called by Presenter ---
      */
-    onSignIn(): void {
-        this.props.updateStateLogin(true);
+    onSignUp(): void {
+        this.props.updateSnackbar("User successfully created!", false);
+        this.props.updateStateSignup(false);
     }
 
     onError(): void {
@@ -117,9 +107,8 @@ class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
         return (
             <Container component="main" maxWidth="xs">
                 <div className={classes.paper}>
-                    <Avatar className={classes.avatar} />
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Sign Up
                     </Typography>
                     <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
                         <TextField
@@ -146,10 +135,6 @@ class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
                             id="password"
                             autoComplete="current-password"
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
                         <Button
                             type="submit"
                             fullWidth
@@ -157,23 +142,8 @@ class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
                             color="primary"
                             className={classes.submit}
                         >
-                            Sign In
+                            Sign Up
                         </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link className={classes.text} href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link className={classes.text}
-                                      href="#"
-                                      onClick={() => { this.props.updateStateSignup(true);}}
-                                      variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </form>
                 </div>
                 <Box mt={8}>
@@ -185,4 +155,4 @@ class Login extends React.Component<LoginProps, LoginState> implements Ilogin{
 }
 
 // @ts-ignore
-export default withStyles(useStyles)(Login)
+export default withStyles(useStyles)(Signup)

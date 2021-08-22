@@ -5,7 +5,7 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import UserSerializer, GroupSerializer, ReceiptSerializer
+from .serializers import UserSerializer, GroupSerializer, ReceiptSerializer, UserListSerializer
 from .services.receipt import ReceiptService
 from datetime import datetime
 import json
@@ -21,6 +21,29 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class UserList(APIView):
+    serializer_class = UserListSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        try:
+            data = request.data
+            if not data['username'] or not data['password']:
+                return Response({'error': 'Missing parameters'}, status=status.HTTP_400_BAD_REQUEST)
+            data = {
+                'username': data['username'],
+                'password': data['password'],
+                'email': 'example@example.com'
+            }
+            serializer = UserListSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({'success': True}, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response({'error': 'Something happened'}, status=status.HTTP_501_NOT_IMPLEMENTED)
 
 
 class ReceiptViewSet(APIView):

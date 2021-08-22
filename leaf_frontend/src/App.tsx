@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Login from "./components/login/Login";
+import Signup from "./components/signup/Signup";
 import Receipt from './components/receipt/Receipt';
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -17,6 +18,7 @@ const useStyles = (theme: any) => ({
 
 export interface AppState {
   isLogged: boolean;
+  isSigningUp: boolean;
   success: boolean;
   successMessage: string;
   error: boolean;
@@ -29,6 +31,7 @@ class App extends React.Component<any, AppState> {
     super(props);
     this.state = {
       isLogged: false,
+      isSigningUp: false,
       success: false,
       successMessage: '',
       error: false,
@@ -41,6 +44,10 @@ class App extends React.Component<any, AppState> {
 
   handleLogin = (isLogged: boolean) => {
     this.setState({ isLogged: isLogged });
+  };
+
+  handleSignUp = (isSigningUp: boolean) => {
+    this.setState({ isSigningUp: isSigningUp });
   };
 
   handleSnackbar = (message: string, isError: boolean) => {
@@ -77,8 +84,15 @@ class App extends React.Component<any, AppState> {
             </Toolbar>
           </AppBar>
 
-          {!this.state.isLogged &&
-          <Login updateSnackbar={this.handleSnackbar} updateStateLogin={this.handleLogin}/>}
+          {!this.state.isLogged && !this.state.isSigningUp &&
+          <Login
+              updateSnackbar={this.handleSnackbar}
+              updateStateLogin={this.handleLogin}
+              updateStateSignup={this.handleSignUp}/>}
+
+          {this.state.isSigningUp &&
+          <Signup updateSnackbar={this.handleSnackbar} updateStateSignup={this.handleSignUp}/>}
+
           {this.state.isLogged &&
           <Receipt updateSnackbar={this.handleSnackbar}/>}
 

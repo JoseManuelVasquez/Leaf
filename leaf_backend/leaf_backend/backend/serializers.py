@@ -11,6 +11,21 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'username', 'email', 'groups', 'receipts']
 
 
+class UserListSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(max_length=100)
+    password = serializers.CharField(max_length=100)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        user.save()
+
+        return user
+
+
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
@@ -32,7 +47,6 @@ class BlockSerializer(serializers.ModelSerializer):
 
 
 class ReceiptSerializer(serializers.HyperlinkedModelSerializer):
-    #owner = serializers.ReadOnlyField(source='owner.username')
     date_time = serializers.DateTimeField()
     blocks = BlockSerializer(many=True)
 
